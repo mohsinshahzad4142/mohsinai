@@ -105,13 +105,13 @@ main{flex:1;display:flex;flex-direction:column;overflow:hidden;position:relative
   </div>
   <div class="input-footer">
     <span>Enter = Send • Shift+Enter = New line</span>
-    <span>Powered by Gemini AI</span>
+    <span>Powered by Groq AI</span>
   </div>
 </div>
 <div class="error-toast" id="errorToast"></div>
 <script>
-const API_KEY='AIzaSyBkpflYq44vBEyt6pvIVVdX0SNToINLE7s';
-const API_URL='https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key='+API_KEY;
+const GROQ_API_KEY='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';
+
 let history=[];
 let isLoading=false;
 const input=document.getElementById('userInput');
@@ -155,19 +155,18 @@ async function sendMessage(){
   isLoading=true;document.getElementById('sendBtn').disabled=true;
   addTyping();
   try{
-    const res=await fetch(API_URL,{
+    // Build messages for Groq
+    const msgs=[{role:'system',content:'Tum MohsinAI ho — Muhammad Mohsin Shahzad ka personal AI assistant. Tum helpful, smart aur friendly ho. User jo bhi language use kare — Urdu ya English — usi mein jawab do. Code ke saath code blocks use karo. Concise aur helpful raho.'},...history.map(m=>({role:m.role==='model'?'assistant':m.role,content:m.parts[0].text}))];
+    const res=await fetch('https://api.groq.com/openai/v1/chat/completions',{
       method:'POST',
-      headers:{'Content-Type':'application/json'},
-      body:JSON.stringify({
-        system_instruction:{parts:[{text:`Tum MohsinAI ho — Muhammad Mohsin Shahzad ka personal AI assistant. Tum helpful, smart aur friendly ho. User jo bhi language use kare — Urdu ya English — usi mein jawab do. Code ke saath code blocks use karo. Concise aur helpful raho.`}]},
-        contents:history
-      })
+      headers:{'Content-Type':'application/json','Authorization':'Bearer '+GROQ_API_KEY},
+      body:JSON.stringify({model:'llama-3.3-70b-versatile',messages:msgs,max_tokens:1000})
     });
     const data=await res.json();
     document.getElementById('typing')?.remove();
     if(data.error){showError('Error: '+data.error.message);}
     else{
-      const reply=data.candidates[0].content.parts[0].text;
+      const reply=data.choices[0].message.content;
       addMsg('ai',reply);
       history.push({role:'model',parts:[{text:reply}]});
     }
