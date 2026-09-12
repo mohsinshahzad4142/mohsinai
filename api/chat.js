@@ -24,7 +24,7 @@ module.exports = async (req, res) => {
         'Content-Type': 'application/json',
       },
       body: JSON.stringify({
-        model: 'mixtral-8x7b-32768',
+        model: 'llama3-8b-8192', // <-- YAHAN MODEL CHANGE HUA HAI
         messages: formattedMessages,
         max_tokens: 1000
       })
