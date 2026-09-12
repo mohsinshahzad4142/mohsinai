@@ -24,7 +24,7 @@ module.exports = async (req, res) => {
         'Authorization': `Bearer ${apiKey}`
       },
       body: JSON.stringify({
-        model: 'llama-3.1-70b-versatile', // Yahan update kiya gaya hai
+        model: 'llama-3.3-70b-versatile',
         messages: formattedMessages,
         max_tokens: 1000
       })
