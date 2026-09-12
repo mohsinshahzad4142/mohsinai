@@ -1,5 +1,4 @@
 module.exports = async (req, res) => {
-  // CORS / Method check
   if (req.method !== 'POST') {
     return res.status(405).json({ error: 'Method not allowed' });
   }
@@ -25,7 +24,7 @@ module.exports = async (req, res) => {
         'Authorization': `Bearer ${apiKey}`
       },
       body: JSON.stringify({
-        model: 'llama-3.3-70b-versatile',
+        model: 'llama-3.1-70b-versatile', // Yahan update kiya gaya hai
         messages: formattedMessages,
         max_tokens: 1000
       })
