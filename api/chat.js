@@ -20,11 +20,11 @@ module.exports = async (req, res) => {
     const response = await fetch('https://api.groq.com/openai/v1/chat/completions', {
       method: 'POST',
       headers: {
+        'Authorization': 'Bearer ' + apiKey,
         'Content-Type': 'application/json',
-        'Authorization': `Bearer ${apiKey}`
       },
       body: JSON.stringify({
-        model: 'llama-3.1-8b-instant', // Universal active Groq model
+        model: 'llama-3.1-8b-instant',
         messages: formattedMessages,
         max_tokens: 1000
       })
